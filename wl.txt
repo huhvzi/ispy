@@ -1,0 +1,15 @@
+Username: so
+Email: goga@goga.org
+Age: 15
+Password: 123
+--------------------------
+Username: 11
+Email: real@real.real
+Age: 1024
+Password: 123
+--------------------------
+Username: vizzy
+Email: vizzyxo@proton.me
+Age: 14
+Password: vaibhav123
+--------------------------
