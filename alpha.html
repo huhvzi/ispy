@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alpha Waitlist Signup</title>
+    <style>
+        /* CSS styles remain the same */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 500px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+        form {
+            margin-top: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #333;
+        }
+        input[type="text"],
+        input[type="email"],
+        input[type="number"],
+        input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        input[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+            width: 100%;
+        }
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+        .success-message {
+            background-color: #dff0d8;
+            color: #3c763d;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+        .error-msg {
+            background-color: #ff0000;
+            color: #000000;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Join Alpha Waitlist</h2>
+        <form id="waitlistForm">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required>
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+
+            <label for="age">Age:</label>
+            <input type="number" id="age" name="age" required>
+
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+
+            <input type="submit" id="submitBtn" value="Join Waitlist">
+        </form>
+
+        <script>
+            // Function to check cooldown
+            function checkCooldown() {
+                var cooldowns = JSON.parse(localStorage.getItem("cooldowns")) || {};
+                var ip = "fake_IP"; // In a real scenario, you would use a server-side script to get the IP
+                var currentTime = Math.floor(Date.now() / 1000);
+                if (cooldowns[ip] && currentTime - cooldowns[ip] < 300) { // 300 seconds = 5 minutes
+                    document.getElementById("submitBtn").setAttribute("disabled", true);
+                    document.getElementById("submitBtn").value = "Cooldown";
+                    setTimeout(function() {
+                        document.getElementById("submitBtn").removeAttribute("disabled");
+                        document.getElementById("submitBtn").value = "Join Waitlist";
+                    }, (300 - (currentTime - cooldowns[ip])) * 1000);
+                }
+            }
+            checkCooldown();
+
+            // Function to update cooldown
+            function updateCooldown() {
+                var cooldowns = JSON.parse(localStorage.getItem("cooldowns")) || {};
+                var ip = "fake_IP"; // In a real scenario, you would use a server-side script to get the IP
+                cooldowns[ip] = Math.floor(Date.now() / 1000);
+                localStorage.setItem("cooldowns", JSON.stringify(cooldowns));
+            }
+
+            // Form submission event listener
+            document.getElementById("waitlistForm").addEventListener("submit", function(event) {
+                event.preventDefault(); // Prevent default form submission
+                var cooldowns = JSON.parse(localStorage.getItem("cooldowns")) || {};
+                var ip = "fake_IP"; // In a real scenario, you would use a server-side script to get the IP
+                var currentTime = Math.floor(Date.now() / 1000);
+                if (cooldowns[ip] && currentTime - cooldowns[ip] < 300) { // 300 seconds = 5 minutes
+                    alert("You can only submit the form once every 5 minutes.");
+                } else {
+                    updateCooldown();
+                    document.getElementById("waitlistForm").submit(); // Submit the form
+                }
+            });
+        </script>
+    </div>
+</body>
+</html>
